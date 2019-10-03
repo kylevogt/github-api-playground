@@ -1,6 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Service } from 'typedi';
 import { HttpService } from './../http/http.service';
+import { Repository } from './models/repository.model';
 
 @Service()
 export class GithubService {
@@ -10,7 +11,7 @@ export class GithubService {
         this.http = http;
     }
 
-    public async getOrganizationRepositories(organization: string): Promise<any> {
+    public async getOrganizationRepositories(organization: string): Promise<Repository[]> {
         const url: string = `/orgs/${organization}/repos`;
         const config: AxiosRequestConfig = this.getBaseConfig();
 
