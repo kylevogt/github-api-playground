@@ -2,17 +2,20 @@ import { AxiosResponse } from 'axios';
 import { expect } from 'chai';
 import { IMock, It, Mock, Times } from 'typemoq';
 import { HttpService } from './../http/http.service';
+import { Logger } from './../logger/logger.service';
 import { GithubService } from './github.service';
 import { getSampleOrgRepositoryListResponse, getSampleRepoPullRequestListResponse } from './test-data';
 
-describe('Github', () => {
+describe('GithubService', () => {
     let httpMock: IMock<HttpService>;
+    let loggerMock: IMock<Logger>;
     let service: GithubService;
 
     beforeEach(() => {
         httpMock = Mock.ofType<HttpService>();
+        loggerMock = Mock.ofType<Logger>();
 
-        service = new GithubService(httpMock.object);
+        service = new GithubService(httpMock.object, loggerMock.object);
     });
 
     describe('getOrganizationRepositories', () => {
