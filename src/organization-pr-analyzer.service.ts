@@ -16,7 +16,7 @@ export class OrganizationPrAnalyzerService {
 
     public async loadOrganizationPullRequests(organization: string): Promise<PullRequest[]> {
         this.logger.info(`Pulling repository list for ${organization}...`);
-        let repositories: Repository[] = await this.github.getOrganizationRepositories(organization);
+        const repositories: Repository[] = await this.github.getOrganizationRepositories(organization);
 
         this.logger.info('Found these repositories: ', repositories.map((r) => r.full_name));
 

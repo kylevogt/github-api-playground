@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "start": "ts-node src/main",
+    "start": "ts-node -r dotenv/config  src/main",
     "prestart:prod": "npm run build",
     "start:prod": "node dist/main.js",
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
@@ -34,6 +34,7 @@
     "@types/node": "^12.7.9",
     "@types/parse-link-header": "^1.0.0",
     "chai": "^4.2.0",
+    "dotenv": "^8.1.0",
     "mocha": "^6.2.1",
     "ts-node": "^8.4.1",
     "tslint": "^5.20.0",

@@ -2,6 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import * as parseLinkHeader from 'parse-link-header';
 import { Links } from 'parse-link-header';
 import { Service } from 'typedi';
+import { AppConfig } from './../app-config.model';
 import { HttpService } from './../http/http.service';
 import { Logger } from './../logger/logger.service';
 import { PullRequest } from './models/pull-request.model';
@@ -10,10 +11,12 @@ import { Repository } from './models/repository.model';
 @Service()
 export class GithubService {
     private http: HttpService;
+    private config: AppConfig;
     private logger: Logger;
 
-    constructor(http: HttpService, logger: Logger) {
+    constructor(http: HttpService, config: AppConfig, logger: Logger) {
         this.http = http;
+        this.config = config;
         this.logger = logger;
     }
 
@@ -67,6 +70,7 @@ export class GithubService {
             baseURL: 'https://api.github.com',
             headers: {
                 Accept: 'application/vnd.github.v3+json',
+                Authorization: `token ${ this.config.githubAccessToken }`,
             },
         };
     }

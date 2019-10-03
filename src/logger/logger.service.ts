@@ -1,3 +1,4 @@
+// tslint:disable: no-console
 import { Service } from 'typedi';
 
 @Service()

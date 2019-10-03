@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { expect } from 'chai';
 import { IMock, It, Mock, Times } from 'typemoq';
+import { AppConfig } from './../app-config.model';
 import { HttpService } from './../http/http.service';
 import { Logger } from './../logger/logger.service';
 import { GithubService } from './github.service';
@@ -9,13 +10,15 @@ import { getSampleOrgRepositoryListResponse, getSampleRepoPullRequestListRespons
 describe('GithubService', () => {
     let httpMock: IMock<HttpService>;
     let loggerMock: IMock<Logger>;
+    let configMock: IMock<AppConfig>;
     let service: GithubService;
 
     beforeEach(() => {
         httpMock = Mock.ofType<HttpService>();
+        configMock = Mock.ofType<AppConfig>();
         loggerMock = Mock.ofType<Logger>();
 
-        service = new GithubService(httpMock.object, loggerMock.object);
+        service = new GithubService(httpMock.object, configMock.object, loggerMock.object);
     });
 
     describe('getOrganizationRepositories', () => {
@@ -36,6 +39,21 @@ describe('GithubService', () => {
         it('Specifies correct baseurl', async () => {
             httpMock
                 .setup((http) => http.get(It.isAny(), It.is((c) => c.baseURL === 'https://api.github.com')))
+                .returns(() => Promise.resolve({ data: [], headers: {}} as AxiosResponse))
+                .verifiable(Times.once());
+
+            await service.getOrganizationRepositories('org-name');
+
+            httpMock.verifyAll();
+        });
+
+        it('Specifies correct authorization header', async () => {
+            configMock
+                .setup((c) => c.githubAccessToken)
+                .returns(() => 'supersecret');
+
+            httpMock
+                .setup((http) => http.get(It.isAny(), It.is((c) => c.headers.Authorization === 'token supersecret')))
                 .returns(() => Promise.resolve({ data: [], headers: {}} as AxiosResponse))
                 .verifiable(Times.once());
 
