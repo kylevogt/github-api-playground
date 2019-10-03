@@ -1,0 +1,37 @@
+{
+  "name": "github-api-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "start": "ts-node src/main",
+    "prestart:prod": "npm run build",
+    "start:prod": "node dist/main.js",
+    "test": "mocha ./src/**/*.spec.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kylevogt/github-api-playground.git"
+  },
+  "author": "Kyle Vogt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kylevogt/github-api-playground/issues"
+  },
+  "homepage": "https://github.com/kylevogt/github-api-playground#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "typedi": "^0.8.0",
+    "typescript": "^3.6.3"
+  },
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.7.9",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.1",
+    "ts-node": "^8.4.1",
+    "tslint": "^5.20.0",
+    "typemoq": "^2.1.0"
+  }
+}
