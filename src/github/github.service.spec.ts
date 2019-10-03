@@ -18,7 +18,10 @@ describe('Github', () => {
         it('Sends request to correct url', async () => {
             httpMock
                 .setup((http) => http.get('/orgs/org-name/repos', It.isAny()))
-                .returns(() => Promise.resolve({ data: getSampleOrgRepositoryListResponse() } as AxiosResponse))
+                .returns(() => Promise.resolve({
+                    data: getSampleOrgRepositoryListResponse(),
+                    headers: {},
+                } as AxiosResponse))
                 .verifiable(Times.once());
 
             await service.getOrganizationRepositories('org-name');
@@ -29,7 +32,7 @@ describe('Github', () => {
         it('Specifies correct baseurl', async () => {
             httpMock
                 .setup((http) => http.get(It.isAny(), It.is((c) => c.baseURL === 'https://api.github.com')))
-                .returns(() => Promise.resolve({ data: {}} as AxiosResponse))
+                .returns(() => Promise.resolve({ data: {}, headers: {}} as AxiosResponse))
                 .verifiable(Times.once());
 
             await service.getOrganizationRepositories('org-name');
@@ -43,7 +46,7 @@ describe('Github', () => {
                     It.isAny(),
                     It.is((c) => c.headers.Accept === 'application/vnd.github.v3+json'),
                 ))
-                .returns(() => Promise.resolve({ data: {}} as AxiosResponse))
+                .returns(() => Promise.resolve({ data: {}, headers: {}} as AxiosResponse))
                 .verifiable(Times.once());
 
             await service.getOrganizationRepositories('org-name');
@@ -55,8 +58,13 @@ describe('Github', () => {
     describe('getRepositoryPullRequests', () => {
         it('Sends request to correct url', async () => {
             httpMock
-                .setup((http) => http.get('/repos/org-name/repo-name/pulls', It.isAny()))
-                .returns(() => Promise.resolve({ data: getSampleRepoPullRequestListResponse() } as AxiosResponse))
+                .setup((http) => http.get('/repos/org-name/repo-name/pulls?state=all', It.isAny()))
+                .returns(
+                    () => Promise.resolve({
+                        data: getSampleRepoPullRequestListResponse(),
+                        headers: {},
+                    } as AxiosResponse),
+                )
                 .verifiable(Times.once());
 
             await service.getRepositoryPullRequests('org-name', 'repo-name');
@@ -67,7 +75,7 @@ describe('Github', () => {
         it('Specifies correct baseurl', async () => {
             httpMock
                 .setup((http) => http.get(It.isAny(), It.is((c) => c.baseURL === 'https://api.github.com')))
-                .returns(() => Promise.resolve({ data: {}} as AxiosResponse))
+                .returns(() => Promise.resolve({ data: {}, headers: {}} as AxiosResponse))
                 .verifiable(Times.once());
 
             await service.getRepositoryPullRequests('org-name', 'repo-name');
@@ -81,7 +89,7 @@ describe('Github', () => {
                     It.isAny(),
                     It.is((c) => c.headers.Accept === 'application/vnd.github.v3+json'),
                 ))
-                .returns(() => Promise.resolve({ data: {}} as AxiosResponse))
+                .returns(() => Promise.resolve({ data: {}, headers: {}} as AxiosResponse))
                 .verifiable(Times.once());
 
             await service.getRepositoryPullRequests('org-name', 'repo-name');

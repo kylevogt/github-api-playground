@@ -46,7 +46,6 @@ export class GithubService {
     private async requestAllPages<T>(url: string, config: AxiosRequestConfig): Promise<T[]> {
         console.log('Requesting page...', url);
         const response: AxiosResponse<T[]> = await this.http.get(url, config);
-
         const links: Links | null = parseLinkHeader(response.headers.link);
 
         if (links && links.next) {
