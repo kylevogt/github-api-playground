@@ -1,28 +1,16 @@
 import 'reflect-metadata';
 import Container from 'typedi';
-import { GithubService } from './github/github.service';
 import { PullRequest } from './github/models/pull-request.model';
-import { Repository } from './github/models/repository.model';
+import { OrganizationPrAnalyzerService } from './organization-pr-analyzer.service';
 
 execute()
     .then(() => console.log('Process has completed'))
     .catch((error) => console.error('Process has encountered an uncaught error', error));
 
 async function execute(): Promise<void> {
-    const github: GithubService = Container.get(GithubService);
-    const owner: string = 'ramda';
+    const organization: string = 'ramda';
+    const analyzer: OrganizationPrAnalyzerService = Container.get(OrganizationPrAnalyzerService);
+    const pullRequests: PullRequest[] = await analyzer.loadOrganizationPullRequests(organization);
 
-    console.log(`Pulling repository list for ${owner}...`);
-    const repositories: Repository[] = await github.getOrganizationRepositories(owner);
-
-    console.log('Found these repositories: ', repositories.map((r) => r.full_name));
-    console.log('Building list of pull requests...');
-
-    const requests: Promise<PullRequest[]>[] = repositories
-        .map((repo: Repository) => github.getRepositoryPullRequests(owner, repo.name));
-
-    const pullRequests: PullRequest[] = (await Promise.all(requests))
-        .reduce((previous: PullRequest[], current: PullRequest[]) => [...previous, ...current], []);
-
-    console.log(`Found ${pullRequests.length} PR's for organization ${owner}`);
+    console.log(`Found ${pullRequests.length} PR's for organization ${organization}`);
 }
