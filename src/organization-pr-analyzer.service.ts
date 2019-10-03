@@ -31,7 +31,7 @@ export class OrganizationPrAnalyzerService {
     }
 
     private async loadPullRequestsForRepository(organization: string, repository: Repository): Promise<PullRequest[]> {
-        this.logger.info(`Sending request for pull requests from ${repository.full_name}`);
+        this.logger.info(`Sending request(s) for pull requests from ${repository.full_name}`);
 
         const pullRequests: PullRequest[] = await this.github.getRepositoryPullRequests(organization, repository.name);
 
