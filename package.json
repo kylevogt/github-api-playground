@@ -29,6 +29,7 @@
     "typescript": "^3.6.3"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.3",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.7.9",
     "@types/parse-link-header": "^1.0.0",
